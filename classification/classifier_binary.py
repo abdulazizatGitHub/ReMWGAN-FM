@@ -21,9 +21,35 @@ with open('dpl_data.pkl', 'rb') as f:
 print(f"Training samples shape: {tr_samples.shape}")
 print(f"Test samples shape: {te_samples.shape}")
 
+# Print class distribution information
+print(f"Training labels shape: {tr_labels.shape}")
+print(f"Test labels shape: {te_labels.shape}")
+print(f"Unique training labels: {np.unique(tr_labels)}")
+print(f"Unique test labels: {np.unique(te_labels)}")
+print(f"Training label counts: {np.bincount(tr_labels)}")
+print(f"Test label counts: {np.bincount(te_labels)}")
+
 # Dynamically determine input dimension
 input_dim = tr_samples.shape[1] # Number of features
 print(f"Dynamically determined input dimension: {input_dim}")
+
+# Convert multiclass labels to binary (0 for attacks, 1 for normal)
+# Assuming class 0 is normal and all other classes are attacks
+print("Converting multiclass labels to binary...")
+print(f"Original unique training labels: {np.unique(tr_labels)}")
+print(f"Original unique test labels: {np.unique(te_labels)}")
+
+# Convert to binary: 1 for normal (class 0), 0 for all attacks (classes 1,2,3,4)
+normal_class = 0
+print(f"Normal class identified as: {normal_class}")
+
+tr_labels_binary = (tr_labels == normal_class).astype(int)
+te_labels_binary = (te_labels == normal_class).astype(int)
+
+print(f"Binary training labels: {np.unique(tr_labels_binary)}")
+print(f"Binary test labels: {np.unique(te_labels_binary)}")
+print(f"Binary training label counts: {np.bincount(tr_labels_binary)}")
+print(f"Binary test label counts: {np.bincount(te_labels_binary)}")
 
 # Data used directly without reshaping for DNN
 x_train = tr_samples
@@ -44,7 +70,7 @@ def train_and_evaluate(seed):
     np.random.seed(seed)
     tf.random.set_seed(seed)
 
-    # Build the model
+    # Build the model for binary classification
     model = Sequential([
         Dense(256, activation='relu', input_shape=(input_dim,)),
         Dense(128, activation='relu'),
@@ -57,18 +83,18 @@ def train_and_evaluate(seed):
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
     # Train the model
-    model.fit(x_train, tr_labels, batch_size=batch_size, epochs=training_epochs, shuffle=True, verbose=1)
+    model.fit(x_train, tr_labels_binary, batch_size=batch_size, epochs=training_epochs, shuffle=True, verbose=1)
 
     # Model evaluation
-    score = model.evaluate(x_test, te_labels, batch_size=batch_size, verbose=1)
+    score = model.evaluate(x_test, te_labels_binary, batch_size=batch_size, verbose=1)
     print(f"Test loss: {score[0]}, Test accuracy: {score[1]}")
 
     # Prediction
     pre = model.predict(x_test).flatten()
     y_pred = (pre > 0.5).astype(int)
-    y_true = te_labels
+    y_true = te_labels_binary
 
-    # Calculate evaluation metrics
+    # Calculate evaluation metrics for binary classification
     recall = recall_score(y_true, y_pred)
     f1 = f1_score(y_true, y_pred)
     acc = accuracy_score(y_true, y_pred)
@@ -89,7 +115,7 @@ def train_and_evaluate(seed):
     plt.savefig(heatmap_path)
     plt.close()
 
-    # ROC curve
+    # ROC curve for binary classification
     fpr, tpr, _ = roc_curve(y_true, pre)
     roc_auc = auc(fpr, tpr)
     plt.figure(figsize=(7, 6))
@@ -101,7 +127,7 @@ def train_and_evaluate(seed):
     plt.ylabel('True Positive Rate')
     plt.title(f'Receiver Operating Characteristic (ROC) Curve (Seed: {seed})')
     plt.legend(loc="lower right")
-    roc_plot_path = os.path.join(output_dir, f'roc_curve_seed_{seed}.png')
+    roc_plot_path = os.path.join(output_dir, f'roc_curves_seed_{seed}.png')
     plt.savefig(roc_plot_path)
     plt.close()
 

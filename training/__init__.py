@@ -24,5 +24,4 @@ from training.GAN import GAN
 from training.WGAN import WGAN
 from training.SNGAN import SNGAN
 from training.classifier import Classifier
-from training.TMG_GAN_Dynamic import TMGGANDynamic
 from training.TMG_GAN_DPL import MYMETHOD
