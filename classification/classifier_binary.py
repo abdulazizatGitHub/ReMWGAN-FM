@@ -59,7 +59,7 @@ x_test = te_samples
 n_hidden_1 = 256
 training_epochs = 50
 batch_size = 64
-output_dir = os.path.join('./classification/TMG_WGAN_results/', 'binary_class')
+output_dir = os.path.join('./classification/ReMWGAN_FM_results/', 'binary_class')
 os.makedirs(output_dir, exist_ok=True)
 
 # Function to create and train the model

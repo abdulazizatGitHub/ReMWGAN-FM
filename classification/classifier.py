@@ -45,7 +45,7 @@ training_epochs = 50
 batch_size = 128  # Reduce the batch size to decrease memory usage
 
 # Create output folder
-output_dir = os.path.join('./classification/TMG_WGAN_results/', 'multi_class')
+output_dir = os.path.join('./classification/ReMWGAN_FM_results/', 'multi_class')
 os.makedirs(output_dir, exist_ok=True)
 
 # Define sentiment category labels

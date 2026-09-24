@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 from training.logger import Logger
 
 class TrainingTracker:
-    def __init__(self, log_name="TMG_GAN_Training"):
+    def __init__(self, log_name="ReMWGAN_FM_Training"):
         self.epochs = []
         self.d_losses = []
         self.g_losses = []

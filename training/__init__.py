@@ -19,9 +19,9 @@ from training import(
 # )
 
 from training.logger import Logger
-from training.TMG_GAN import TMGGAN
+from training.tmg_gan_reference import OriginalTMGGAN, TMGGAN
+from training.remwgan_fm import ReMWGANFM, MYMETHOD
 from training.GAN import GAN
 from training.WGAN import WGAN
 from training.SNGAN import SNGAN
 from training.classifier import Classifier
-from training.TMG_GAN_DPL import MYMETHOD
