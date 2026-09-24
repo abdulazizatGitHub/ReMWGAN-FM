@@ -5,47 +5,9 @@ import pickle
 import torch
 
 import training
-from training import Classifier, datasets, utils
-
-from sklearn.utils.class_weight import compute_class_weight
-import numpy as np
-
-# dataset = 'KDDCUP99'
-# dataset = 'NSL-KDD'
+from training import datasets, utils
 
 if __name__ == '__main__':
-    # utils.set_random_state()
-    # utils.prepare_datasets(dataset)
-    # utils.turn_on_test_mode()
-    # utils.transfer_to_binary()
-
-    # # select features
-    # lens = (len(datasets.tr_samples), len(datasets.te_samples))
-    # samples = torch.cat(
-    #     [
-    #         datasets.tr_samples,
-    #         datasets.te_samples,
-    #     ]
-    # )
-    # labels = torch.cat(
-    #     [
-    #         datasets.tr_labels,
-    #         datasets.te_labels,
-    #     ]
-    # )
-    # from sklearn.decomposition import PCA
-    # from sklearn.preprocessing import minmax_scale
-    #
-    # pca = PCA(n_components=25)
-    # samples = torch.from_numpy(
-    #     minmax_scale(
-    #         pca.fit_transform(samples, labels)
-    #     )
-    # ).float()
-    # samples = (samples - samples.min())
-    # datasets.tr_samples, datasets.te_samples = torch.split(samples, lens)
-    # utils.set_dataset_values()
-    # print(datasets.feature_num)
 
     utils.set_random_state()
     tmg_gan = training.MYMETHOD()
@@ -77,15 +39,4 @@ if __name__ == '__main__':
             ),
             f,
         )
-
-    # utils.set_random_state()
-    # clf = Classifier('TMG_GAN')
-    # clf.model = tmg_gan.cd
-    # clf.fit(datasets.TrDataset())
-    # torch.cuda.empty_cache()
-    # clf.test(datasets.TeDataset())
-    # print(clf.confusion_matrix)
-    # print(clf.metrics)
-    # clf.binary_test(datasets.TeDataset())
-    # print(clf.confusion_matrix)
-    # print(clf.metrics)
+        
